@@ -123,8 +123,8 @@ function openApp(name){
 function home(){view="home";currentApp=null;editingNote=null;chatId=null;overlay.innerHTML="";render()}
 function touchNav(){
  let sy=0,sx=0;
- phoneE1.addEventListener("pointerdown",e=>{sy=e.clientY;sx=e.clientX;phoneE1.setPointerCapture?.(e.pointerId)});
- phoneE1.addEventListener("pointerup",e=>{
+ phoneEl.addEventListener("pointerdown",e=>{sy=e.clientY;sx=e.clientX;phoneEl.setPointerCapture?.(e.pointerId)});
+ phoneEl.addEventListener("pointerup",e=>{
    const dy=e.clientY-sy,dx=e.clientX-sx;
    if(Math.abs(dy)>70){
      if(view==="lock"&&dy<0)return home();
@@ -136,7 +136,7 @@ function touchNav(){
    if(Math.abs(dx)>70&&view==="home"){page=Math.max(0,Math.min(1,page+(dx<0?1:-1)));render()}
  });
 }
-phone.addEventListener("click",e=>{
+phoneEl.addEventListener("click",e=>{
  const t=e.target.closest("button"); if(!t)return;
  if(t.dataset.action==="camera")openApp("camera");
  if(t.dataset.action==="flash")toast("손전등은 가상 기능입니다.");
