@@ -1,7 +1,7 @@
 import {seedData} from "./data/data.js";
 
 const $ = s => document.querySelector(s);
-const phone = $("#phone");
+const phoneEl = $("#phone");
 const screen = $("#screen"), overlay = $("#overlay-root"), wallpaper = $("#wallpaper");
 const KEY="ios-web-sim-v1";
 let state = JSON.parse(localStorage.getItem(KEY) || "null") || structuredClone(seedData);
@@ -89,7 +89,7 @@ function renderApp(){
   else if(currentApp==="safari") body=safari();
   else if(currentApp==="notes") body=notes();
   else if(currentApp==="calendar") body=calendar();
-  else if(currentApp==="phone") body=phone();
+  else if(currentApp==="phone") body=phoneApp();
   else if(currentApp==="settings") body=settings();
   else body=`${nav(currentApp)}<div class="app-body empty">이 앱은 확장 가능한 가상 앱 자리입니다.</div>`;
   screen.innerHTML += `<div class="app-window">${body}</div>`;
@@ -105,7 +105,7 @@ function safari(){return `${nav("Safari",false)}<div class="browser"><div class=
 function notes(){let n=state.notes.find(x=>x.id===editingNote); if(n)return `${nav(n.title)}<div class="app-body notes"><textarea id="noteBody">${esc(n.body)}</textarea></div>`;
  return `${nav("메모",false)}<div class="app-body">${state.notes.map(n=>`<button class="row" data-note="${n.id}"><span class="grow"><b>${esc(n.title)}</b><br><small>${esc(n.body)}</small></span>›</button>`).join("")}<button class="card blue" data-newnote>＋ 새 메모</button></div>`}
 function calendar(){let days=Array.from({length:31},(_,i)=>`<div class="day ${i===25?"today":""}">${i+1}</div>`).join("");return `${nav("캘린더",false)}<div class="app-body"><div class="calendar">${["일","월","화","수","목","금","토"].map(x=>`<b>${x}</b>`).join("")}${days}</div>${state.events.map(e=>`<div class="event"><b>${e.time}</b> · ${esc(e.title)}</div>`).join("")}<button class="card blue" data-newevent>＋ 일정 추가</button></div>`}
-function phone(){return `${nav("최근 통화",false)}<div class="app-body">${["민준","서연","가상 연락처"].map(x=>`<div class="row">📞 <span class="grow"><b>${x}</b><br><small>오늘</small></span>›</div>`).join("")}<div class="keypad">${"123456789*0#".split("").map(x=>`<button class="key" data-key="${x}">${x}</button>`).join("")}</div></div>`}
+function phoneApp(){return `${nav("최근 통화",false)}<div class="app-body">${["민준","서연","가상 연락처"].map(x=>`<div class="row">📞 <span class="grow"><b>${x}</b><br><small>오늘</small></span>›</div>`).join("")}<div class="keypad">${"123456789*0#".split("").map(x=>`<button class="key" data-key="${x}">${x}</button>`).join("")}</div></div>`}
 function settings(){return `${nav("설정",false)}<div class="app-body">
  <div class="card" style="display:flex;align-items:center;gap:12px"><span style="font-size:38px">👤</span><span><b>가상 사용자</b><br><small>iOS Web Simulator</small></span>›</div>
  ${settingRow("Wi‑Fi","wifi")} ${settingRow("Bluetooth","bluetooth")} ${settingRow("집중 모드","focus")}
@@ -123,8 +123,8 @@ function openApp(name){
 function home(){view="home";currentApp=null;editingNote=null;chatId=null;overlay.innerHTML="";render()}
 function touchNav(){
  let sy=0,sx=0;
- phone.addEventListener("pointerdown",e=>{sy=e.clientY;sx=e.clientX;phone.setPointerCapture?.(e.pointerId)});
- phone.addEventListener("pointerup",e=>{
+ phoneE1.addEventListener("pointerdown",e=>{sy=e.clientY;sx=e.clientX;phoneE1.setPointerCapture?.(e.pointerId)});
+ phoneE1.addEventListener("pointerup",e=>{
    const dy=e.clientY-sy,dx=e.clientX-sx;
    if(Math.abs(dy)>70){
      if(view==="lock"&&dy<0)return home();
@@ -163,5 +163,4 @@ document.addEventListener("input",e=>{
  if(e.id==="noteBody"){let n=state.notes.find(x=>x.id===editingNote);if(n){n.body=e.value;save()}}
 });
 $("#home-indicator").addEventListener("click",()=>view==="home"?null:home());
-const phone = $("#phone");
 touchNav();setInterval(()=>{if(view==="lock"||view==="home")render()},1000);render();
