@@ -163,4 +163,5 @@ document.addEventListener("input",e=>{
  if(e.id==="noteBody"){let n=state.notes.find(x=>x.id===editingNote);if(n){n.body=e.value;save()}}
 });
 $("#home-indicator").addEventListener("click",()=>view==="home"?null:home());
+const phone = $("#phone");
 touchNav();setInterval(()=>{if(view==="lock"||view==="home")render()},1000);render();
