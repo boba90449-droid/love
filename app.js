@@ -1,6 +1,7 @@
 import {seedData} from "./data/data.js";
 
 const $ = s => document.querySelector(s);
+const phone = $("#phone");
 const screen = $("#screen"), overlay = $("#overlay-root"), wallpaper = $("#wallpaper");
 const KEY="ios-web-sim-v1";
 let state = JSON.parse(localStorage.getItem(KEY) || "null") || structuredClone(seedData);
